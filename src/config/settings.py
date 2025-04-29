@@ -11,8 +11,10 @@ class BaseAppSettings(BaseSettings):
     PATH_TO_DB: str = str(BASE_DIR / "database" / "source" / "theater.db")
     PATH_TO_MOVIES_CSV: str = str(
         BASE_DIR / "database" / "seed_data" / "imdb_movies.csv"
-    )
+    ).rstrip("/")
     LOGIN_TIME_DAYS: int = 7
+    ACTIVATION_TOKEN_LIFETIME: timedelta = timedelta(hours=24)
+    PASSWORD_RESET_TOKEN_LIFETIME: timedelta = timedelta(hours=24)
 
 
 class Settings(BaseAppSettings):
@@ -39,5 +41,5 @@ class TestingSettings(BaseAppSettings):
         object.__setattr__(
             self,
             "PATH_TO_MOVIES_CSV",
-            str(self.BASE_DIR / "database" / "seed_data" / "test_data.csv"),
+            str(self.BASE_DIR / "database" / "seed_data" / "test_data.csv").rstrip("/"),
         )
