@@ -187,12 +187,15 @@ async def login_user(
         access_token = jwt_manager.create_access_token({"user_id": user.id})
         refresh_token = jwt_manager.create_refresh_token({"user_id": user.id})
 
+        token_data = jwt_manager.decode_refresh_token(refresh_token)
+        expires_at = datetime.fromtimestamp(token_data["exp"], tz=timezone.utc)
+
         token_record = RefreshTokenModel(
             user_id=user.id,
             token=refresh_token,
-            expires_at=datetime.now(timezone.utc)
-            + timedelta(minutes=jwt_manager._REFRESH_KEY_TIMEDELTA_MINUTES),
+            expires_at=expires_at,
         )
+
         db.add(token_record)
         await db.commit()
 
