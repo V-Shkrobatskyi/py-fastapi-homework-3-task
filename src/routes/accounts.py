@@ -298,7 +298,7 @@ async def reset_password(
                 detail="Invalid email or token.",
             )
 
-        token.user.set_password(reset_data.password)
+        token.user.password = reset_data.password
         await db.delete(token)
         await db.commit()
 
