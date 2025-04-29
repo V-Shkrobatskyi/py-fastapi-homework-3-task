@@ -102,7 +102,7 @@ async def register_user(
             message="Please check your email address for activation link.",
         )
 
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
